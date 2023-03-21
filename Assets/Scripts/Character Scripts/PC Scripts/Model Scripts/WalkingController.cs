@@ -124,7 +124,7 @@ public class WalkingController : Controller
         {
             walkVelocityX = Vector3.zero;
         }
-        walkVelocity = walkVelocityX+walkVelocityZ;
+        walkVelocity = walkVelocityX + walkVelocityZ;
         walkVelocity.Normalize();
         walkVelocity *= walkSpeed;
 

@@ -25,6 +25,10 @@ public class PCMove : TacticsMove
                 turnNum = TurnManager.ReturnTurnNum();
                 fuf = false;
             }
+
+
+            //Optimize this
+            ////////////////////////
             if (curHealth > maxHealth)
             {
                 curHealth = maxHealth;
@@ -53,7 +57,6 @@ public class PCMove : TacticsMove
                 else if (!moving)
                 {
                     FindSelectableTiles();
-                    //CheckMouse();
                     if(bc.selected)
                     {
                         MoveToTile(bc.moveTile);
@@ -64,31 +67,8 @@ public class PCMove : TacticsMove
                     Move();
                 }
             }
+            ////////////////////////////
         }
     }
-    //void CheckMouse()
-    //{
-    //    if (turn)
-    //    {
-    //        if (Input.GetMouseButtonUp(0))
-    //        {
-    //            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-    //            RaycastHit hit;
-    //            if (Physics.Raycast(ray, out hit))
-    //            {
-    //                if (hit.collider.tag == "Tile")
-    //                {
-    //                    Tile t = hit.collider.GetComponent<Tile>();
-    //                    if (t.selectable)
-    //                    {
-    //                        MoveToTile(t);
-
-    //                    }
-    //                }
-    //            }
-    //        }
-    //    }
-    //}
 
 }

@@ -1,15 +1,19 @@
-﻿using System.Collections;
+﻿using System;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+using System.Collections;
+using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BattleInit : MonoBehaviour
 {
     public static BattleInit battleInit;
-    public float acceptableCornerHeight;
-    public float acceptableMidHeight;
-    public float maxGroundAngle;
-    public int maxHeight;
-    public int maxDepth;
+    public float acceptableCornerHeight = .49f;
+    public float acceptableMidHeight = .47f;
+    public float maxGroundAngle = 50f;
+    public int maxHeight = 20;
+    public int maxDepth = -20;
 
     int vertIndex = 0;
     List<Vector3> verts = new List<Vector3>();
@@ -26,8 +30,10 @@ public class BattleInit : MonoBehaviour
     byte[,,] voxelMap = new byte[VoxelData.ChunkWidth, VoxelData.ChunkHeight, VoxelData.ChunkWidth];
     void Awake()
     {
+        //this is causing the bootup issues. 
         battleInit = this;
-        GetTileCoords(1000);
+        //GetTileCoords(1000);
+        LoadTileCoordData();
         tiles = new GameObject[1000, 1000];//placeholder for worldDim atm
     }
 
@@ -36,107 +42,123 @@ public class BattleInit : MonoBehaviour
         
     }
 
-    public void GetTileCoords(int worldDim)
+    void LoadTileCoordData()
     {
-        heights = new float[worldDim, worldDim];
-        for (int x = 0; x < worldDim; x++)
+        if (File.Exists("C:/Users/Emily Rose/Tactics-Game/Assets/Resources/Data/TileCoordData.dat"))
         {
-            for (int z = 0; z < worldDim; z++)
-            {
-                //THE INDEXES OF EACH TILE IS ADD BY 0.5 TO GET THEIR WORLD POSITION
-                float height1 = -2;
-                float height2 = -1;
-                float height3 = -1;
-                float height4 = -1;
-                float height5 = -1;
-                float inw = .1f;
-                float groundAngle = -1;
-                RaycastHit hit;
-                if (Physics.Raycast(new Vector3(x+inw, 256, z+inw), -Vector3.up, out hit, 512))
-                {
-                    if (hit.transform.tag == "Ground")
-                    {
-                        height1 = Mathf.RoundToInt(hit.point.y * 2) / 2f;
-                        if (Mathf.Abs(hit.point.y - height1) > acceptableCornerHeight)
-                        {
-                            height1 = -1;
-                        }
-                    }
-                }
-                if (Physics.Raycast(new Vector3(x + 1-inw, 256, z+inw), -Vector3.up, out hit, 512))
-                {
-
-                    if (hit.transform.tag == "Ground")
-                    {
-                        height2 = Mathf.RoundToInt(hit.point.y * 2) / 2f;
-                        if (Mathf.Abs(hit.point.y - height2) > acceptableCornerHeight)
-                        {
-                            height2 = -1;
-                        }
-                    }
-                }
-                if (Physics.Raycast(new Vector3(x + .5f, 256, z + .5f), -Vector3.up, out hit, 512))
-                {
-                    if (hit.transform.tag == "Ground")
-                    {
-                        height3 = Mathf.RoundToInt(hit.point.y * 2) / 2f;
-                        if (Mathf.Abs(hit.point.y - height3) > acceptableMidHeight)
-                        {
-                            height3 = -1;
-                        }
-                        groundAngle = Mathf.RoundToInt(Vector3.Angle(hit.normal, Vector3.up));
-                    }
-                }
-                if (Physics.Raycast(new Vector3(x+inw, 256, z + 1-inw), -Vector3.up, out hit, 512))
-                {
-                    if (hit.transform.tag == "Ground")
-                    {
-                        height4 = Mathf.RoundToInt(hit.point.y * 2) / 2f;
-                        if (Mathf.Abs(hit.point.y - height4) > acceptableCornerHeight)
-                        {
-                            height4 = -1;
-                        }
-                    }
-                }
-
-                if (Physics.Raycast(new Vector3(x + 1-inw, 256, z + 1-inw), -Vector3.up, out hit, 512))
-                {
-                    if (hit.transform.tag == "Ground")
-                    {
-                        height5 = Mathf.RoundToInt(hit.point.y * 2) / 2f;
-                        if (Mathf.Abs(hit.point.y - height5) > acceptableCornerHeight)
-                        {
-                            height5 = -1;
-                        }
-                    }
-                }
-                bool greatDiagonals1 = Mathf.Abs(height1 - height5) > 1;
-                bool greatDiagonals2 = Mathf.Abs(height2 - height4) > 1;
-                bool fullDiag = greatDiagonals1 || greatDiagonals2;
-                if (height3 >= maxDepth && height3<=maxHeight && !fullDiag)
-                {
-                    if (groundAngle < maxGroundAngle)
-                    {
-                        heights[x, z] = ConvertToIndex(height3);
-                    }
-                    else
-                    {
-                        heights[x, z] = 999;
-                    }
-                }
-                else
-                {
-                    heights[x, z] = 999;
-                }
-            }
+            BinaryFormatter bf = new BinaryFormatter();
+            FileStream file =
+                       File.Open("C:/Users/Emily Rose/Tactics-Game/Assets/Resources/Data/TileCoordData.dat", FileMode.Open);
+            TileCoordData data = (TileCoordData)bf.Deserialize(file);
+            file.Close();
+            heights = data.heights;
+            Debug.Log("Game data loaded!");
         }
+        else
+            Debug.LogError("There is no save data!");
     }
 
+    //public void GetTileCoords(int worldDim)
+    //{
+    //    heights = new float[worldDim, worldDim];
+    //    for (int x = 0; x < worldDim; x++)
+    //    {
+    //        for (int z = 0; z < worldDim; z++)
+    //        {
+    //            //THE INDEXES OF EACH TILE IS ADD BY 0.5 TO GET THEIR WORLD POSITION
+    //            float height1 = -2;
+    //            float height2 = -1;
+    //            float height3 = -1;
+    //            float height4 = -1;
+    //            float height5 = -1;
+    //            float inw = .1f;
+    //            float groundAngle = -1;
+    //            RaycastHit hit;
+    //            if (Physics.Raycast(new Vector3(x+inw, 256, z+inw), -Vector3.up, out hit, 512))
+    //            {
+    //                if (hit.transform.tag == "Ground")
+    //                {
+    //                    height1 = Mathf.RoundToInt(hit.point.y * 2) / 2f;
+    //                    if (Mathf.Abs(hit.point.y - height1) > acceptableCornerHeight)
+    //                    {
+    //                        height1 = -1;
+    //                    }
+    //                }
+    //            }
+    //            if (Physics.Raycast(new Vector3(x + 1-inw, 256, z+inw), -Vector3.up, out hit, 512))
+    //            {
 
-    public float ConvertToIndex(float coord)
-    {
-        return Mathf.RoundToInt(coord*2)/2f;
-    }
+    //                if (hit.transform.tag == "Ground")
+    //                {
+    //                    height2 = Mathf.RoundToInt(hit.point.y * 2) / 2f;
+    //                    if (Mathf.Abs(hit.point.y - height2) > acceptableCornerHeight)
+    //                    {
+    //                        height2 = -1;
+    //                    }
+    //                }
+    //            }
+    //            if (Physics.Raycast(new Vector3(x + .5f, 256, z + .5f), -Vector3.up, out hit, 512))
+    //            {
+    //                if (hit.transform.tag == "Ground")
+    //                {
+    //                    height3 = Mathf.RoundToInt(hit.point.y * 2) / 2f;
+    //                    if (Mathf.Abs(hit.point.y - height3) > acceptableMidHeight)
+    //                    {
+    //                        height3 = -1;
+    //                    }
+    //                    groundAngle = Mathf.RoundToInt(Vector3.Angle(hit.normal, Vector3.up));
+    //                }
+    //            }
+    //            if (Physics.Raycast(new Vector3(x+inw, 256, z + 1-inw), -Vector3.up, out hit, 512))
+    //            {
+    //                if (hit.transform.tag == "Ground")
+    //                {
+    //                    height4 = Mathf.RoundToInt(hit.point.y * 2) / 2f;
+    //                    if (Mathf.Abs(hit.point.y - height4) > acceptableCornerHeight)
+    //                    {
+    //                        height4 = -1;
+    //                    }
+    //                }
+    //            }
+
+    //            if (Physics.Raycast(new Vector3(x + 1-inw, 256, z + 1-inw), -Vector3.up, out hit, 512))
+    //            {
+    //                if (hit.transform.tag == "Ground")
+    //                {
+    //                    height5 = Mathf.RoundToInt(hit.point.y * 2) / 2f;
+    //                    if (Mathf.Abs(hit.point.y - height5) > acceptableCornerHeight)
+    //                    {
+    //                        height5 = -1;
+    //                    }
+    //                }
+    //            }
+    //            bool greatDiagonals1 = Mathf.Abs(height1 - height5) > 1;
+    //            bool greatDiagonals2 = Mathf.Abs(height2 - height4) > 1;
+    //            bool fullDiag = greatDiagonals1 || greatDiagonals2;
+    //            if (height3 >= maxDepth && height3<=maxHeight && !fullDiag)
+    //            {
+    //                if (groundAngle < maxGroundAngle)
+    //                {
+    //                    heights[x, z] = ConvertToIndex(height3);
+    //                }
+    //                else
+    //                {
+    //                    heights[x, z] = 999;
+    //                }
+    //            }
+    //            else
+    //            {
+    //                heights[x, z] = 999;
+    //            }
+    //        }
+    //    }
+    //}
+
+
+    //public float ConvertToIndex(float coord)
+    //{
+    //    return Mathf.RoundToInt(coord*2)/2f;
+    //}
 
     public void MakeTiles(int addX, int addZ, int worldDim, GameObject player)
     {

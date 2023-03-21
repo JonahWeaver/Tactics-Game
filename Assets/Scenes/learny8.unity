@@ -7378,7 +7378,6 @@ GameObject:
   - component: {fileID: 795948780}
   - component: {fileID: 795948783}
   - component: {fileID: 795948781}
-  - component: {fileID: 795948784}
   - component: {fileID: 795948785}
   m_Layer: 0
   m_Name: Gulliver
@@ -7663,22 +7662,6 @@ MonoBehaviour:
   dim: 0
   cursor: {fileID: 0}
   world: {fileID: 0}
---- !u!114 &795948784
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 795948773}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa14cc4c274b78b4c820064214bdbb60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 5
-  worldDirection: 0
-  rotatePlayer: 1
-  rotationDamping: 0.5
 --- !u!114 &795948785
 MonoBehaviour:
   m_ObjectHideFlags: 0

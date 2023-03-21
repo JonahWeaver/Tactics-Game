@@ -38,8 +38,6 @@ public class OverworldCameraMovement : MonoBehaviour
 
     public bool beforeFirstMove;
 
-    Vector3 bRing1;
-
     public Vector3 radiusConstant;
 
     void Awake()
@@ -49,21 +47,32 @@ public class OverworldCameraMovement : MonoBehaviour
         beforeFirstMove = true;
         camHeight = ring1;
         yRotPos = true;
+        yRotSum = (ring1+ring2)/2;
+    }
+
+    void Start()
+    {
+        camView.transform.eulerAngles = new Vector3(0, 0, 0);
+
+        Vector3 offset = player.transform.up * yRotSum;
+        offset += -camView.transform.forward * GetRadius(yRotSum);
+        transform.position = player.transform.position + offset;
+        transform.LookAt(camView.transform);
     }
     void Update()
     {
-        rotateHorizontal = Input.GetAxis("Mouse X")*xSpeed*Time.deltaTime;
+        rotateHorizontal = Input.GetAxis("Mouse X")* xSpeed * Time.deltaTime;
         rotateVertical = Input.GetAxis("Mouse Y") * ySpeed * Time.deltaTime;
         //sentinel code to default camera position
-        if (beforeFirstMove && rotateHorizontal == 0 && rotateVertical==0&& bRing1!=null)
-        {
-            transform.position = bRing1;
-            transform.LookAt(camView.transform);
-        }
-        else if(rotateHorizontal != 0 && rotateVertical != 0 &&beforeFirstMove==true )
-        {
-            beforeFirstMove = false;
-        }
+        //if (beforeFirstMove && rotateHorizontal == 0 && rotateVertical==0&& bRing1!=null)
+        //{
+        //    transform.position = bRing1;
+        //    transform.LookAt(camView.transform);
+        //}
+        //else if(rotateHorizontal != 0 && rotateVertical != 0 && beforeFirstMove)
+        //{
+        //    beforeFirstMove = false;
+        //}
         
 
         if(yRotation>0&& rotateVertical<0 || yRotation<0 && rotateVertical>0|| rotateVertical==0)
