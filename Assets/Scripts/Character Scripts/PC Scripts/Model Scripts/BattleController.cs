@@ -19,7 +19,6 @@ public class BattleController : Controller
     //Initialization variables
     public float yDist;
     public float zDist;
-    public bool flag1=false;
 
     //Camera Rotation
     public bool rotating;
@@ -71,7 +70,6 @@ public class BattleController : Controller
     protected override void Start()
     {
         base.Start();
-        enabled = false;
         rotation = 0;
         angle = 0;
         accelAngle = 0;
@@ -82,21 +80,12 @@ public class BattleController : Controller
         cursorSupp = new GameObject();
         cursorSupp.name = "Supplement";
         currentRotationSpeed = minRotationSpeed;
+        BattleControllerInit();
+        //ColorTiles();
+        dim = GetComponent<WalkingController>().dimension;
     }
-
-
     void Update()
     {
-        
-
-        if(!flag1)
-        {
-            BattleControllerInit();
-            //ColorTiles();
-            dim = GetComponent<WalkingController>().dimension;
-            flag1 = true;
-
-        }
         if(newInput&& !rotating&& TurnManager.PlayerTurn&&!selected)
         {
             //mVert && mHor
@@ -140,12 +129,6 @@ public class BattleController : Controller
 
             CameraRotate();
         }
-
-        //if (test)
-        //{
-        //    gameObject.GetComponent<Rigidbody>().useGravity = true;
-        //    switcher.Switch(switcher.controllers[0]);
-        //}
 
         newInput = false;
     }
@@ -301,6 +284,12 @@ public class BattleController : Controller
         cursor.transform.position = gameObject.transform.position + new Vector3(0, cursorHeight, 0);
         cursorSupp.transform.position = gameObject.transform.position;
         cursorSupp.transform.parent = cursor.transform;
+    }
+
+    void BattleControllerEnd()
+    {
+        gameObject.GetComponent<Rigidbody>().useGravity = true;
+        switcher.Switch(switcher.controllers[0]);
 
     }
 

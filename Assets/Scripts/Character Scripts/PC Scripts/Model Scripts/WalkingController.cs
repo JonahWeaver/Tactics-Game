@@ -153,6 +153,7 @@ public class WalkingController : Controller
         if(test)
         {
             InitGrid();
+            test = false;
             newInput = true;
         }
 
@@ -252,7 +253,6 @@ public class WalkingController : Controller
                 Quaternion look = Quaternion.LookRotation(walkVelocity, Vector3.up);
                 transform.rotation = Quaternion.Lerp(transform.rotation, look, turnSpeed*Time.deltaTime);
                 transform.eulerAngles = new Vector3(0, transform.eulerAngles.y, 0);
-                
             }
             else
             {
@@ -278,12 +278,10 @@ public class WalkingController : Controller
 
     void InitGrid()
     { 
-
         BattleInit.battleInit.MakeTiles( Mathf.RoundToInt(gameObject.transform.position.x-.5f)- (dimension+1)/2, Mathf.RoundToInt(gameObject.transform.position.z - .5f) - (dimension + 1) / 2, dimension, gameObject);
-        
-        //.92f is offset for character height. Needs to change
-        //GetComponent<PCMove>().StartBattle();
 
+        GetComponent<Rigidbody>().velocity = Vector3.zero;
+        GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
 
         switcher.Switch(switcher.controllers[2]);
     }

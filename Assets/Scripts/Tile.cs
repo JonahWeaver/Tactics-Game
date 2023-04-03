@@ -42,21 +42,16 @@ public class Tile : MonoBehaviour
     public float h = 0;
     public float r;
 
-    
+    Renderer renderer;
 
     Vector3 halfExtents;
     public List<TacticsMove> enemy;
     public TacticsMove inhab;
 
-    struct tileCoord
-    {
-        public int x;
-        public int y;
-        public int z;
-    };
     void Awake()
     {
         colorChanged = true;
+        renderer = GetComponent<Renderer>();
         //MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
         //meshRenderer.enabled = false;
         //MeshFilter filter = GetComponent<MeshFilter>();
@@ -71,43 +66,34 @@ public class Tile : MonoBehaviour
             if (baseTile != null)
             {
                 OGColor = baseTile.theColor;
-                GetComponent<Renderer>().material.SetColor("_Color", OGColor);
+                renderer.material.SetColor("_Color", OGColor);
             }
             if (current)
             {
-                if (cursor) GetComponent<Renderer>().material.color = Color.green;
-                else GetComponent<Renderer>().material.color = Color.magenta;
+                if (cursor) renderer.material.color = Color.green;
+                else renderer.material.color = Color.magenta;
             }
-            
             else if (selectable)
             {
-                if (cursor) GetComponent<Renderer>().material.color = Color.yellow;
-                else GetComponent<Renderer>().material.color = Color.blue;
+                if (cursor) renderer.material.color = Color.yellow;
+                else renderer.material.color = Color.blue;
             }
             else if (attackTarget)
             {
-
-                GetComponent<Renderer>().material.color = Color.red;
+                renderer.material.color = Color.red;
             }
             else if (attackPresent)
             {
-
-                GetComponent<Renderer>().material.color = Color.green;
-
+                renderer.material.color = Color.green;
             }
-
-
             else if (attackSelect)
             {
-
-                GetComponent<Renderer>().material.color = Color.cyan;
-
+                renderer.material.color = Color.cyan;
             }
             else if (target)
             {
-                GetComponent<Renderer>().material.color = Color.green;
+                renderer.material.color = Color.green;
             }
-            
             
             else if (returning)
             {
@@ -115,11 +101,11 @@ public class Tile : MonoBehaviour
             }
             else if(corner)
             {
-                GetComponent<Renderer>().material.color = Color.blue;
+                renderer.material.color = Color.blue;
             }
             else
             {
-                GetComponent<Renderer>().material.color = OGColor;
+                renderer.material.color = OGColor;
             }
             colorChanged = false;
         }
@@ -187,8 +173,6 @@ public class Tile : MonoBehaviour
         halfExtents = new Vector3(.25f, jumpHeight, .25f);
 
         Collider[] colliders = Physics.OverlapBox(transform.position + direction, halfExtents);
-
-        RaycastHit hit3;
 
         foreach (Collider item in colliders)
         {

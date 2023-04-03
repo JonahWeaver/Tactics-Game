@@ -46,11 +46,14 @@ public abstract class Controller : MonoBehaviour
         {
             foreach(Controller controller in switcher.controllers)
             {
-                controller.Deactivate();
+                if (controller != this)
+                {
+                    controller.Deactivate();
+                }
             }
             InputManager.ins.controller = this;
             this.enabled = true;
-            if (mainCam!= null)
+            if (mainCam != null)
             {
                 mainCam.gameObject.SetActive(true);
             }

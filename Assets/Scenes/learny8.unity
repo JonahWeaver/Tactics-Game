@@ -586,9 +586,6 @@ MonoBehaviour:
   ySpeed: 10
   yRotation: 0
   yRotSum: 0
-  yRotPos: 0
-  speed: 0
-  camHeight: 0
   maxMoveDist: 2
   minMoveDist: 1
   ring1: 1.6
@@ -599,8 +596,6 @@ MonoBehaviour:
   ring3R: 1.6
   player: {fileID: 795948773}
   camView: {fileID: 281191352}
-  beforeFirstMove: 0
-  radiusConstant: {x: 0, y: 0, z: 0}
 --- !u!114 &33583513
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3937,13 +3932,11 @@ MonoBehaviour:
   returnTiles1: []
   returnTiles2: []
   returnTiles3: []
-  starts: []
   currentTile: {fileID: 0}
+  actualTargetTile: {fileID: 0}
   newCurrentTile: {fileID: 0}
-  newCurrentTile2: {fileID: 0}
   temp: {x: 0, y: 0, z: 0}
-  turn: 0
-  moving: 0
+  thisGuy: {fileID: 474629302}
   move: 5
   attackRange: 2
   jumpHeight: 2
@@ -3957,20 +3950,16 @@ MonoBehaviour:
   mDefense: 0
   maxMana: 0
   curMana: 0
+  turn: 0
+  moving: 0
+  turnNum: 0
   jumpVelocity: 4.5
   minDistance: 0
-  thisGuy: {fileID: 474629302}
-  pCount: 0
   velocity: {x: 0, y: 0, z: 0}
   heading: {x: 0, y: 0, z: 0}
   nearest1: 0
-  actualTargetTile: {fileID: 0}
   Tile: {fileID: 0}
-  turnNum: 0
-  dip: 0
-  dip2: 0
   battleStarted: 0
-  character: {fileID: 0}
   aM: {fileID: 0}
   moves: 0
 --- !u!114 &474629302
@@ -7531,7 +7520,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 795948773}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b5420478aa4d1da4c8e5e11904518456, type: 3}
   m_Name: 
@@ -7625,13 +7614,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 795948773}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 206e73393419b11419be3b68b5f2333e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   mainCam: {fileID: 1444050436}
-  camView: {fileID: 0}
+  camView: {fileID: 1444050434}
   mVert: 0
   mHor: 0
   test: 0
@@ -7641,7 +7630,6 @@ MonoBehaviour:
   moveTile: {fileID: 0}
   yDist: 4.5
   zDist: 4
-  flag1: 0
   rotating: 0
   rotation: 0
   rotationAccel: 0.2
@@ -7680,40 +7668,34 @@ MonoBehaviour:
   returnTiles1: []
   returnTiles2: []
   returnTiles3: []
-  starts: []
   currentTile: {fileID: 0}
+  actualTargetTile: {fileID: 0}
   newCurrentTile: {fileID: 0}
-  newCurrentTile2: {fileID: 0}
   temp: {x: 0, y: 0, z: 0}
-  turn: 0
-  moving: 0
+  thisGuy: {fileID: 795948781}
   move: 5
   attackRange: 2
   jumpHeight: 2
   moveSpeed: 2
   speed: 3
   maxHealth: 2
-  curHealth: 0
+  curHealth: 2
   attack: 2
   mAttack: 2
   defense: 2
   mDefense: 2
   maxMana: 2
   curMana: 0
+  turn: 0
+  moving: 0
+  turnNum: 0
   jumpVelocity: 4.5
   minDistance: 0
-  thisGuy: {fileID: 795948781}
-  pCount: 0
   velocity: {x: 0, y: 0, z: 0}
   heading: {x: 0, y: 0, z: 0}
   nearest1: 0
-  actualTargetTile: {fileID: 0}
   Tile: {fileID: 0}
-  turnNum: 0
-  dip: 0
-  dip2: 0
   battleStarted: 0
-  character: {fileID: 0}
   aM: {fileID: 0}
   bc: {fileID: 795948783}
 --- !u!1 &800732466
@@ -14107,7 +14089,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &1444050435
 AudioListener:
   m_ObjectHideFlags: 0

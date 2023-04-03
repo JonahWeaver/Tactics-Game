@@ -40,7 +40,6 @@ public class TurnManager : MonoBehaviour
 
     void Update()
     {
-
         if (turnTeam2.Count == 0)
         {
             InitTeamTurnQueue();
@@ -49,7 +48,6 @@ public class TurnManager : MonoBehaviour
 
     static void InitTeamTurnQueue()
     {
-
         teamList = new List<TacticsMove>();
         foreach (TacticsMove unit in turnTeam)
         {
@@ -58,11 +56,6 @@ public class TurnManager : MonoBehaviour
 
         SpeedSorted(teamList);
 
-
-        if (turnNum == 2)
-        {
-
-        }
         foreach (TacticsMove unit in teamList)
         {
             if (unit != null)
@@ -72,16 +65,8 @@ public class TurnManager : MonoBehaviour
                     turnTeam2.Enqueue(unit);
                 }
             }
-
-
-
-
-
         }
         turns = turnTeam2.Count;
-
-
-
         StartTurn();
     }
 
@@ -103,17 +88,14 @@ public class TurnManager : MonoBehaviour
             turnNum++;
         }
 
-
         unit.EndTurn();
 
         if (turnTeam2.Count > 0)
         {
             StartTurn();
-
         }
         else
         {
-
             InitTeamTurnQueue();
         }
     }
@@ -124,7 +106,6 @@ public class TurnManager : MonoBehaviour
         {
             turnTeam.Enqueue(unit);
         }
-
     }
 
     public static void SpeedSorted(List<TacticsMove> units)
@@ -176,9 +157,6 @@ public class TurnManager : MonoBehaviour
             {
                 player = unit;
             }
-
-
-
         }
         return player;
     }
@@ -186,7 +164,5 @@ public class TurnManager : MonoBehaviour
     {
         turnTeam = new Queue<TacticsMove>(turnTeam.Where(p => p != unit));
         Destroy(unit.gameObject);
-
     }
-
 }

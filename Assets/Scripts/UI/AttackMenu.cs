@@ -171,7 +171,7 @@ public class AttackMenu : MonoBehaviour
     {
         //TacticsCam.leftRot.SetActive(false);
         //TacticsCam.rightRot.SetActive(false);
-        Debug.Log(returnTiles.Count + ", " + enemiesTiles[choice].inhab.attackRange);
+        //Debug.Log(returnTiles.Count + ", " + enemiesTiles[choice].inhab.attackRange);
         if (Input.GetKeyDown("d"))
         {
             returnTiles.Clear();
@@ -360,8 +360,6 @@ public class AttackMenu : MonoBehaviour
             pDMG = -ePAtk;
         }
 
-
-
         getPlayerHealth(eDMG);
         if (MagicMenu.magic && player.curMana > 0)
         {
@@ -385,7 +383,6 @@ public class AttackMenu : MonoBehaviour
             if ((ePAcc - 2 * enemiesTiles[choice].inhab.speed) >= checkPlayerHit)
             {
                 enemiesTiles[choice].inhab.curHealth -= pDMG;
-
             }
             else
             {
@@ -423,14 +420,9 @@ public class AttackMenu : MonoBehaviour
                     }
                     else if (enemy.attackTarget && !MagicMenu.heal)
                     {
-
-
-
                         tr = false;
                     }
-
                 }
-
             }
             foreach (Tile enemy in t.enemyList)
             {
@@ -451,7 +443,6 @@ public class AttackMenu : MonoBehaviour
             player.enemyTiles.Clear();
             foreach (GameObject view in ActionMenu.views)
             {
-
                 Destroy(view);
             }
             ActionMenu.views.Clear();
@@ -462,9 +453,6 @@ public class AttackMenu : MonoBehaviour
             //TacticsCam.rightRot.SetActive(true);
             ActionMenu.returning = null;
             chur = true;
-
-
-
             TurnManager.EndTurn();
         }
 
